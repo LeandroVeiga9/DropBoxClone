@@ -1,7 +1,9 @@
 $(function () {
   'use strict'
 
-  window.Toast = typeof bootstrap !== 'undefined' ? bootstrap.Toast : Toast
+  if (typeof bootstrap !== 'undefined') {
+    window.Toast = bootstrap.Toast
+  }
 
   QUnit.module('toast plugin')
 
@@ -49,7 +51,7 @@ $(function () {
 
     var $el = $('<div/>')
     var $toast = $el.bootstrapToast()
-    assert.true($toast instanceof $, 'returns jquery collection')
+    assert.ok($toast instanceof $, 'returns jquery collection')
     assert.strictEqual($toast[0], $el[0], 'collection contains element')
   })
 
@@ -69,7 +71,7 @@ $(function () {
       .appendTo($('#qunit-fixture'))
 
     $toast.on('hidden.bs.toast', function () {
-      assert.false($toast.hasClass('show'))
+      assert.strictEqual($toast.hasClass('show'), false)
       done()
     })
       .bootstrapToast('show')
@@ -91,7 +93,7 @@ $(function () {
       .appendTo($('#qunit-fixture'))
 
     $toast.on('shown.bs.toast', function () {
-      assert.false($toast.hasClass('fade'))
+      assert.strictEqual($toast.hasClass('fade'), false)
       done()
     })
       .bootstrapToast('show')
@@ -117,7 +119,7 @@ $(function () {
         $toast.bootstrapToast('hide')
       })
       .on('hidden.bs.toast', function () {
-        assert.false($toast.hasClass('show'))
+        assert.strictEqual($toast.hasClass('show'), false)
         done()
       })
       .bootstrapToast('show')
@@ -134,7 +136,7 @@ $(function () {
 
     $toast.bootstrapToast('hide')
 
-    assert.true(spy.called)
+    assert.strictEqual(spy.called, true)
   })
 
   QUnit.test('should allow to destroy toast', function (assert) {
@@ -144,11 +146,11 @@ $(function () {
       .bootstrapToast()
       .appendTo($('#qunit-fixture'))
 
-    assert.notStrictEqual(typeof $toast.data('bs.toast'), 'undefined')
+    assert.ok(typeof $toast.data('bs.toast') !== 'undefined')
 
     $toast.bootstrapToast('dispose')
 
-    assert.strictEqual(typeof $toast.data('bs.toast'), 'undefined')
+    assert.ok(typeof $toast.data('bs.toast') === 'undefined')
   })
 
   QUnit.test('should allow to destroy toast and hide it before that', function (assert) {
@@ -168,13 +170,13 @@ $(function () {
 
     $toast.one('shown.bs.toast', function () {
       setTimeout(function () {
-        assert.true($toast.hasClass('show'))
-        assert.notStrictEqual(typeof $toast.data('bs.toast'), 'undefined')
+        assert.ok($toast.hasClass('show'))
+        assert.ok(typeof $toast.data('bs.toast') !== 'undefined')
 
         $toast.bootstrapToast('dispose')
 
-        assert.strictEqual(typeof $toast.data('bs.toast'), 'undefined')
-        assert.false($toast.hasClass('show'))
+        assert.ok(typeof $toast.data('bs.toast') === 'undefined')
+        assert.ok($toast.hasClass('show') === false)
 
         done()
       }, 1)
@@ -200,7 +202,7 @@ $(function () {
       .appendTo($('#qunit-fixture'))
 
     $toast.on('shown.bs.toast', function () {
-      assert.true($toast.hasClass('show'))
+      assert.strictEqual($toast.hasClass('show'), true)
       done()
     })
       .bootstrapToast('show')
@@ -223,12 +225,12 @@ $(function () {
 
     $toast
       .on('shown.bs.toast', function () {
-        assert.true($toast.hasClass('show'))
+        assert.strictEqual($toast.hasClass('show'), true)
         var button = $toast.find('.close')
         button.trigger('click')
       })
       .on('hidden.bs.toast', function () {
-        assert.false($toast.hasClass('show'))
+        assert.strictEqual($toast.hasClass('show'), false)
         done()
       })
       .bootstrapToast('show')
@@ -272,7 +274,7 @@ $(function () {
     var shownCalled = false
     function assertDone() {
       setTimeout(function () {
-        assert.false(shownCalled)
+        assert.strictEqual(shownCalled, false)
         done()
       }, 20)
     }
@@ -309,8 +311,8 @@ $(function () {
     setTimeout(function () {
       toast._config.autohide = false
       $toast.on('shown.bs.toast', function () {
-        assert.true(spyClearTimeout.called)
-        assert.strictEqual(toast._timeout, null)
+        assert.ok(spyClearTimeout.called)
+        assert.ok(toast._timeout === null)
         done()
       })
       $toast.bootstrapToast('show')
@@ -337,7 +339,7 @@ $(function () {
     var hiddenCalled = false
     function assertDone() {
       setTimeout(function () {
-        assert.false(hiddenCalled)
+        assert.strictEqual(hiddenCalled, false)
         done()
       }, 20)
     }

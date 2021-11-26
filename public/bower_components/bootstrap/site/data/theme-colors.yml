@@ -1,7 +1,7 @@
 - name: primary
   hex: "#007bff"
 - name: secondary
-  hex: "#6c757d"
+  hex: "#868e96"
 - name: success
   hex: "#28a745"
 - name: danger

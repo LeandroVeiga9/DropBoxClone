@@ -53,7 +53,7 @@ $(function () {
     assert.expect(2)
     var $el = $('<div id="modal-test"/>')
     var $modal = $el.bootstrapModal()
-    assert.true($modal instanceof $, 'returns jquery collection')
+    assert.ok($modal instanceof $, 'returns jquery collection')
     assert.strictEqual($modal[0], $el[0], 'collection contains element')
   })
 
@@ -102,44 +102,18 @@ $(function () {
       .bootstrapModal('show')
   })
 
-  QUnit.test('should be shown after the first call to show() has been prevented while fading is enabled', function (assert) {
-    assert.expect(2)
-    var done = assert.async()
-
-    var $el = $('<div class="modal fade"><div class="modal-dialog" style="transition-duration: 20ms;"/></div>').appendTo('#qunit-fixture')
-
-    var prevented = false
-    $el
-      .on('show.bs.modal', function (e) {
-        if (!prevented) {
-          e.preventDefault()
-          prevented = true
-
-          setTimeout(function () {
-            $el.bootstrapModal('show')
-          })
-        }
-      })
-      .on('shown.bs.modal', function () {
-        assert.true(prevented, 'show prevented')
-        assert.true($el.hasClass('fade'))
-        done()
-      })
-      .bootstrapModal('show')
-  })
-
   QUnit.test('should hide modal when hide is called', function (assert) {
     assert.expect(3)
     var done = assert.async()
 
     $('<div id="modal-test"/>')
       .on('shown.bs.modal', function () {
-        assert.true($('#modal-test').is(':visible'), 'modal visible')
+        assert.ok($('#modal-test').is(':visible'), 'modal visible')
         assert.notStrictEqual($('#modal-test').length, 0, 'modal inserted into dom')
         $(this).bootstrapModal('hide')
       })
       .on('hidden.bs.modal', function () {
-        assert.false($('#modal-test').is(':visible'), 'modal hidden')
+        assert.ok(!$('#modal-test').is(':visible'), 'modal hidden')
         done()
       })
       .bootstrapModal('show')
@@ -151,12 +125,12 @@ $(function () {
 
     $('<div id="modal-test"/>')
       .on('shown.bs.modal', function () {
-        assert.true($('#modal-test').is(':visible'), 'modal visible')
+        assert.ok($('#modal-test').is(':visible'), 'modal visible')
         assert.notStrictEqual($('#modal-test').length, 0, 'modal inserted into dom')
         $(this).bootstrapModal('toggle')
       })
       .on('hidden.bs.modal', function () {
-        assert.false($('#modal-test').is(':visible'), 'modal hidden')
+        assert.ok(!$('#modal-test').is(':visible'), 'modal hidden')
         done()
       })
       .bootstrapModal('toggle')
@@ -168,12 +142,12 @@ $(function () {
 
     $('<div id="modal-test"><span class="close" data-dismiss="modal"/></div>')
       .on('shown.bs.modal', function () {
-        assert.true($('#modal-test').is(':visible'), 'modal visible')
+        assert.ok($('#modal-test').is(':visible'), 'modal visible')
         assert.notStrictEqual($('#modal-test').length, 0, 'modal inserted into dom')
         $(this).find('.close').trigger('click')
       })
       .on('hidden.bs.modal', function () {
-        assert.false($('#modal-test').is(':visible'), 'modal hidden')
+        assert.ok(!$('#modal-test').is(':visible'), 'modal hidden')
         done()
       })
       .bootstrapModal('toggle')
@@ -185,11 +159,11 @@ $(function () {
 
     $('<div id="modal-test" data-backdrop="false"/>')
       .on('shown.bs.modal', function () {
-        assert.true($('#modal-test').is(':visible'), 'modal visible')
+        assert.ok($('#modal-test').is(':visible'), 'modal visible')
         $(this).bootstrapModal('hide')
       })
       .on('hidden.bs.modal', function () {
-        assert.false($('#modal-test').is(':visible'), 'modal hidden')
+        assert.ok(!$('#modal-test').is(':visible'), 'modal hidden')
         done()
       })
       .bootstrapModal('show')
@@ -203,11 +177,11 @@ $(function () {
       .on('shown.bs.modal', function () {
         assert.notStrictEqual($('#modal-test').length, 0, 'modal inserted into dom')
         $('.contents').trigger('click')
-        assert.true($('#modal-test').is(':visible'), 'modal visible')
+        assert.ok($('#modal-test').is(':visible'), 'modal visible')
         $('#modal-test').trigger('click')
       })
       .on('hidden.bs.modal', function () {
-        assert.false($('#modal-test').is(':visible'), 'modal hidden')
+        assert.ok(!$('#modal-test').is(':visible'), 'modal hidden')
         done()
       })
       .bootstrapModal('show')
@@ -220,7 +194,7 @@ $(function () {
     $('<div id="modal-test" data-backdrop="false"><div class="contents"/></div>')
       .on('shown.bs.modal', function () {
         $('#modal-test').trigger('click')
-        assert.true($('#modal-test').is(':visible'), 'modal not hidden')
+        assert.ok($('#modal-test').is(':visible'), 'modal not hidden')
         done()
       })
       .bootstrapModal('show')
@@ -233,14 +207,14 @@ $(function () {
     var $div = $('<div id="modal-test"/>')
     $div
       .on('shown.bs.modal', function () {
-        assert.notStrictEqual($('#modal-test').length, 0, 'modal inserted into dom')
-        assert.true($('#modal-test').is(':visible'), 'modal visible')
+        assert.ok($('#modal-test').length, 'modal inserted into dom')
+        assert.ok($('#modal-test').is(':visible'), 'modal visible')
         $div.trigger($.Event('keydown', {
           which: 27
         }))
 
         setTimeout(function () {
-          assert.false($('#modal-test').is(':visible'), 'modal hidden')
+          assert.ok(!$('#modal-test').is(':visible'), 'modal hidden')
           $div.remove()
           done()
         }, 0)
@@ -255,14 +229,14 @@ $(function () {
     var $div = $('<div id="modal-test"/>')
     $div
       .on('shown.bs.modal', function () {
-        assert.notStrictEqual($('#modal-test').length, 0, 'modal inserted into dom')
-        assert.true($('#modal-test').is(':visible'), 'modal visible')
+        assert.ok($('#modal-test').length, 'modal inserted into dom')
+        assert.ok($('#modal-test').is(':visible'), 'modal visible')
         $div.trigger($.Event('keyup', {
           which: 27
         }))
 
         setTimeout(function () {
-          assert.true($div.is(':visible'), 'modal still visible')
+          assert.ok($div.is(':visible'), 'modal still visible')
           $div.remove()
           done()
         }, 0)
@@ -295,11 +269,11 @@ $(function () {
 
     $('<div id="modal-test" aria-hidden="true"/>')
       .on('shown.bs.modal', function () {
-        assert.false($('#modal-test').is('[aria-hidden]'), 'aria-hidden attribute removed')
+        assert.notOk($('#modal-test').is('[aria-hidden]'), 'aria-hidden attribute removed')
         $(this).bootstrapModal('hide')
       })
       .on('hidden.bs.modal', function () {
-        assert.true($('#modal-test').is('[aria-hidden]'), 'aria-hidden attribute added')
+        assert.ok($('#modal-test').is('[aria-hidden]'), 'aria-hidden attribute added')
         assert.strictEqual($('#modal-test').attr('aria-hidden'), 'true', 'correct aria-hidden="true" added')
         done()
       })
@@ -312,12 +286,12 @@ $(function () {
 
     $('<div id="modal-test"/>')
       .on('shown.bs.modal', function () {
-        assert.true($('#modal-test').is('[aria-modal]'), 'aria-modal attribute added')
+        assert.ok($('#modal-test').is('[aria-modal]'), 'aria-modal attribute added')
         assert.strictEqual($('#modal-test').attr('aria-modal'), 'true', 'correct aria-modal="true" added')
         $(this).bootstrapModal('hide')
       })
       .on('hidden.bs.modal', function () {
-        assert.false($('#modal-test').is('[aria-modal]'), 'aria-modal attribute removed')
+        assert.notOk($('#modal-test').is('[aria-modal]'), 'aria-modal attribute removed')
         done()
       })
       .bootstrapModal('show')
@@ -329,12 +303,12 @@ $(function () {
 
     $('<div id="modal-test"/>')
       .on('shown.bs.modal', function () {
-        assert.true($('#modal-test').is('[role]'), 'role attribute added')
+        assert.ok($('#modal-test').is('[role]'), 'role attribute added')
         assert.strictEqual($('#modal-test').attr('role'), 'dialog', 'correct role="dialog" added')
         $(this).bootstrapModal('hide')
       })
       .on('hidden.bs.modal', function () {
-        assert.false($('#modal-test').is('[role]'), 'role attribute removed')
+        assert.notOk($('#modal-test').is('[role]'), 'role attribute removed')
         done()
       })
       .bootstrapModal('show')
@@ -350,13 +324,13 @@ $(function () {
       })
       .one('hidden.bs.modal', function () {
         // After one open-close cycle
-        assert.false($('#modal-test').is(':visible'), 'modal hidden')
+        assert.ok(!$('#modal-test').is(':visible'), 'modal hidden')
         $(this)
           .one('shown.bs.modal', function () {
             $('#close').trigger('click')
           })
           .one('hidden.bs.modal', function () {
-            assert.false($('#modal-test').is(':visible'), 'modal hidden')
+            assert.ok(!$('#modal-test').is(':visible'), 'modal hidden')
             done()
           })
           .bootstrapModal('show')
@@ -373,7 +347,7 @@ $(function () {
     $('<div id="modal-test"><div class="contents"><div id="close" data-dismiss="modal"/></div></div>')
       .on('hidden.bs.modal', function () {
         setTimeout(function () {
-          assert.true($(document.activeElement).is($toggleBtn), 'toggling element is once again focused')
+          assert.ok($(document.activeElement).is($toggleBtn), 'toggling element is once again focused')
           done()
         }, 0)
       })
@@ -401,7 +375,7 @@ $(function () {
       })
       .on('hidden.bs.modal', function () {
         setTimeout(function () {
-          assert.true($(document.activeElement).is($otherBtn), 'focus returned to toggling element')
+          assert.ok($(document.activeElement).is($otherBtn), 'focus returned to toggling element')
           done()
         }, 0)
       })
@@ -648,10 +622,10 @@ $(function () {
 
     $('#test')
       .on('click.bs.modal.data-api', function (event) {
-        assert.false(event.isDefaultPrevented(), 'navigating to href will happen')
+        assert.notOk(event.isDefaultPrevented(), 'navigating to href will happen')
 
         setTimeout(function () {
-          assert.true(event.isDefaultPrevented(), 'model shown instead of navigating to href')
+          assert.ok(event.isDefaultPrevented(), 'model shown instead of navigating to href')
           done()
         }, 1)
       })
@@ -672,7 +646,6 @@ $(function () {
     }, 0)
   })
 
-  // eslint-disable-next-line qunit/resolve-async
   QUnit.test('should not execute js from target', function (assert) {
     assert.expect(0)
     var done = assert.async()
@@ -743,7 +716,7 @@ $(function () {
     var spy = sinon.spy(Util, 'getTransitionDurationFromElement')
 
     $modal.on('shown.bs.modal', function () {
-      assert.true(spy.returned(expectedTransitionDuration))
+      assert.ok(spy.returned(expectedTransitionDuration))
       $style.remove()
       spy.restore()
       done()
@@ -778,11 +751,11 @@ $(function () {
           }
         })
 
-      assert.strictEqual(typeof $(this).data('bs.modal'), 'undefined', 'modal data object was disposed')
+      assert.ok(typeof $(this).data('bs.modal') === 'undefined', 'modal data object was disposed')
 
-      assert.strictEqual(spy.callCount, 4, '`jQuery.off` was called')
+      assert.ok(spy.callCount === 4, '`jQuery.off` was called')
 
-      assert.strictEqual(modalDataApiEvent.length, 1, '`Event.CLICK_DATA_API` on `document` was not removed')
+      assert.ok(modalDataApiEvent.length === 1, '`Event.CLICK_DATA_API` on `document` was not removed')
 
       $.fn.off.restore()
       done()
@@ -850,7 +823,7 @@ $(function () {
     var spyDocOn = sinon.spy($(document), 'on')
 
     $modal.one('shown.bs.modal', function () {
-      assert.true(spy.called, '_enforceFocus called')
+      assert.ok(spy.called, '_enforceFocus called')
       assert.ok(spyDocOff.withArgs('focusin.bs.modal'))
       assert.ok(spyDocOn.withArgs('focusin.bs.modal'))
 
@@ -860,7 +833,7 @@ $(function () {
       })
 
       $(document).one('focusin', function () {
-        assert.true(spyFocus.called)
+        assert.ok(spyFocus.called)
         done()
       })
 
@@ -870,7 +843,7 @@ $(function () {
   })
 
   QUnit.test('should scroll to top of the modal body if the modal has .modal-dialog-scrollable class', function (assert) {
-    assert.expect(3)
+    assert.expect(2)
     var done = assert.async()
 
     var $modal = $([
@@ -887,8 +860,7 @@ $(function () {
 
     var $modalBody = $('.modal-body')
     $modalBody.scrollTop(100)
-    assert.true($modalBody.scrollTop() > 95)
-    assert.true($modalBody.scrollTop() <= 100)
+    assert.ok($modalBody.scrollTop() > 95 && $modalBody.scrollTop() <= 100)
 
     $modal.on('shown.bs.modal', function () {
       assert.strictEqual($modalBody.scrollTop(), 0, 'modal body scrollTop should be 0 when opened')
@@ -927,12 +899,12 @@ $(function () {
       setTimeout(function () {
         var modal = $modal.data('bs.modal')
 
-        assert.true(modal._isShown)
+        assert.strictEqual(modal._isShown, true)
         done()
       }, 10)
     })
       .on('hidden.bs.modal', function () {
-        assert.true(false, 'should not hide the modal')
+        assert.strictEqual(true, false, 'should not hide the modal')
       })
       .bootstrapModal({
         backdrop: 'static'
@@ -952,7 +924,7 @@ $(function () {
       setTimeout(function () {
         var modal = $modal.data('bs.modal')
 
-        assert.false(modal._isShown)
+        assert.strictEqual(modal._isShown, false)
         done()
       }, 10)
     })
@@ -975,12 +947,12 @@ $(function () {
       setTimeout(function () {
         var modal = $modal.data('bs.modal')
 
-        assert.true(modal._isShown)
+        assert.strictEqual(modal._isShown, true)
         done()
       }, 10)
     })
       .on('hidden.bs.modal', function () {
-        assert.false(true, 'should not hide the modal')
+        assert.strictEqual(false, true, 'should not hide the modal')
       })
       .bootstrapModal({
         keyboard: false
@@ -1012,7 +984,7 @@ $(function () {
     $modal.on('shown.bs.modal', function () {
       $modal.trigger('click')
       setTimeout(function () {
-        assert.true($modal.hasClass('modal-static'), 'has modal-static class')
+        assert.ok($modal.hasClass('modal-static'), 'has modal-static class')
         done()
       }, 0)
     })
@@ -1034,7 +1006,7 @@ $(function () {
     $modal.on('shown.bs.modal', function () {
       $modal.trigger('click')
       setTimeout(function () {
-        assert.false($modal.hasClass('modal-static'), 'should not have modal-static class')
+        assert.notOk($modal.hasClass('modal-static'), 'should not have modal-static class')
         done()
       }, 0)
     })

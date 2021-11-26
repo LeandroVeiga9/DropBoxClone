@@ -1,8 +1,8 @@
 {
-  "name": "curso-javascript-projeto-dropbox-clone",
-  "homepage": "https://github.com/hcodebr/curso-javascript-projeto-dropbox-clone",
+  "name": "DropBoxClone",
+  "homepage": "https://github.com/LeandroVeiga9/DropBoxClone",
   "authors": [
-    "Hcode Treinamento"
+    "Leandro Veiga"
   ],
   "description": "Projeto desenvolvido no Curso Completo de JavaScript da Hcode",
   "main": "index.html",
