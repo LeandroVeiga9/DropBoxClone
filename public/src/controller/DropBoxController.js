@@ -106,7 +106,6 @@ class DropBoxController {
 
                 folderRef.remove()
                 
-
             })
 
         })
@@ -114,10 +113,16 @@ class DropBoxController {
     }
 
     removeTask() {
+
         let promises = [];
 
         this.getSelection().forEach((li) => {
             let file = JSON.parse(li.dataset.file);
+
+            // console.log(li.dataset.file.replace('3.jpeg', 'aaaaaa'));
+            let array1 = li.dataset.file.split('?', 2)
+            let array2 = array1[0].split('F', 2)
+
             let key = li.dataset.key;
 
             promises.push(new Promise((resolve, reject)=>{
@@ -136,7 +141,7 @@ class DropBoxController {
                 }
                 else if(file.type){
 
-                    this.removeFile(this.currentFolder.join('/'), file.name).then(()=>{
+                    this.removeFile(this.currentFolder.join('/'), array2[1]).then(()=>{
 
                         resolve({
                             fields:{
@@ -181,14 +186,16 @@ class DropBoxController {
 
         })
 
-        this.btnDelete.addEventListener("click", (e) => {
-        this.removeTask()
-            .then((responses) => {
+    this.btnDelete.addEventListener("click", (e) => {
+
+        this.removeTask().then((responses) => {
 
             responses.forEach(response => {
+
                 if (response.fields.key) {
-                this.getFirebaseRef().child
-                (response.fields.key).remove();
+
+                    this.getFirebaseRef().child
+                    (response.fields.key).remove();
                 }
             })
 
